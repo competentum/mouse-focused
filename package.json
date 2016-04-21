@@ -1,0 +1,15 @@
+{
+  "name": "mouse-focused",
+  "version": "1.0.0",
+  "description": "Adds specific class to DOM-elements which was focused by mouse.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mouse",
+    "focused"
+  ],
+  "author": "Alexey Pilyugin",
+  "license": "ISC"
+}
