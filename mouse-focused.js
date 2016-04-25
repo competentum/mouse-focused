@@ -54,9 +54,11 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var utils = __webpack_require__(2);
 
 	(function () {
 	    var MOUSE_FOCUSED_CLASS = 'is-mouse-focused';
@@ -82,7 +84,7 @@
 	            do {
 	                if (!el.namespaceURI || el.namespaceURI.toLowerCase().indexOf('svg') == -1) {
 	                    els.push(el);
-	                    el.addEventListener('focus', onfocus);
+	                    el.addEventListener('focus', onFocus);
 	                }
 	                el = el.parentNode;
 	            }
@@ -95,15 +97,20 @@
 	                setMouseFocused(document.activeElement);
 	            }, 0);
 
-	            function onfocus() {
+	            function onFocus() {
 	                setMouseFocused(this);
+	            }
+
+	            function onBlur() {
+	                this.removeEventListener('blur', onBlur);
+	                utils.removeClass(this, MOUSE_FOCUSED_CLASS);
 	            }
 
 	            function setMouseFocused(element) {
 	                // if found and it's not body
 	                if (element && element.tagName.toLowerCase() != 'body') {
 	                    // add special class, remove it after `blur`
-	                    addClass(element, MOUSE_FOCUSED_CLASS);
+	                    utils.addClass(element, MOUSE_FOCUSED_CLASS);
 	                    element.addEventListener('blur', onBlur);
 	                }
 	                removeListeners();
@@ -112,39 +119,43 @@
 	            function removeListeners() {
 	                for (var i = 0; i < els.length; i++) {
 	                    el = els[i];
-	                    el.removeEventListener('focus', onfocus);
+	                    el.removeEventListener('focus', onFocus);
 	                }
 	            }
 	        });
 	    }
 
-	    function onBlur() {
-	        this.removeEventListener('blur', onBlur);
-	        removeClass(this, MOUSE_FOCUSED_CLASS);
-	    }
+	})();
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = {
 
 	    /**
 	     *
 	     * @param {Element} element
 	     * @param {string} className
 	     */
-	    function addClass(element, className) {
+	    addClass: function addClass(element, className) {
 	        var re = new RegExp("(^|\\s)" + className + "(\\s|$)", "g");
 	        if (re.test(element.className)) return;
 	        element.className = (element.className + " " + className).replace(/\s+/g, " ").replace(/(^ | $)/g, "");
-	    }
+	    },
 
 	    /**
 	     *
 	     * @param {Element} element
 	     * @param {string} className
 	     */
-	    function removeClass(element, className) {
+	    removeClass: function removeClass(element, className) {
 	        var re = new RegExp("(^|\\s)" + className + "(\\s|$)", "g");
 	        element.className = element.className.replace(re, "$1").replace(/\s+/g, " ").replace(/(^ | $)/g, "");
 	    }
-
-	})();
+	};
 
 /***/ }
 /******/ ]);
