@@ -1,6 +1,6 @@
 {
   "name": "mouse-focused",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,11 @@
     "focused"
   ],
   "author": "Alexey Pilyugin",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "cg-components-banner": "^1.0.3",
+    "path": "^0.12.7",
+    "uppercamelcase": "^1.1.0",
+    "webpack": "^1.13.0"
+  }
 }
