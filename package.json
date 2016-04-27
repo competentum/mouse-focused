@@ -2,7 +2,7 @@
   "name": "mouse-focused",
   "version": "1.0.3",
   "description": "Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
