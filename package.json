@@ -1,6 +1,6 @@
 {
   "name": "mouse-focused",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.",
   "main": "src/index.js",
   "scripts": {
