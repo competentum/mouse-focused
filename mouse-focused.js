@@ -1,5 +1,5 @@
 /*!
- * mouse-focused v1.0.5 - Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.
+ * mouse-focused v1.0.6 - Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.
  * repo: https://github.com/competentum/mouse-focused.git
  * (c) 2015-2016 Competentum Group | http://competentum.com
  */
@@ -78,6 +78,7 @@
 	    function addMouseListener() {
 	        document.body.addEventListener('mousedown', function (e) {
 	            var el = e.target;
+	            var labeledElement;
 
 	            // collect clicked element with it's parents before body-element (except svg elements)
 	            var els = [];
@@ -85,6 +86,21 @@
 	                if (!el.namespaceURI || el.namespaceURI.toLowerCase().indexOf('svg') == -1) {
 	                    els.push(el);
 	                    el.addEventListener('focus', onFocus);
+
+	                    // if label element is clicked, bound element can be focused
+	                    if (el.tagName.toLowerCase() === 'label') {
+	                        // save element bound to label
+	                        if (el.getAttribute('for')) {
+	                            labeledElement = document.getElementById(el.getAttribute('for'));
+	                        }
+	                        else {
+	                            labeledElement = el.querySelector('input');
+	                        }
+	                        if (labeledElement) {
+	                            labeledElement.addEventListener('focus', onFocus);
+	                            document.addEventListener('mouseup', onMouseUp);
+	                        }
+	                    }
 	                }
 	                el = el.parentNode;
 	            }
@@ -95,6 +111,18 @@
 	                // find focused element
 	                setMouseFocused(document.activeElement);
 	            }, 0);
+
+	            function onMouseUp() {
+	                document.removeEventListener('mouseup', onMouseUp);
+	                if (labeledElement) {
+	                    // wait while labeled element will be focused
+	                    // then remove focus listener
+	                    setTimeout(function () {
+	                        labeledElement.removeEventListener('focus', onFocus);
+	                        labeledElement = undefined;
+	                    }, 0);
+	                }
+	            }
 
 	            function onFocus() {
 	                setMouseFocused(this);
