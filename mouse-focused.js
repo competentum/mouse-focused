@@ -1,5 +1,5 @@
 /*!
- * mouse-focused v1.0.6 - Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.
+ * mouse-focused v1.0.7 - Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.
  * repo: https://github.com/competentum/mouse-focused.git
  * (c) 2015-2016 Competentum Group | http://competentum.com
  */
@@ -69,13 +69,15 @@
 	    window.mouseFocusingInitialized = true;
 
 	    if (document.readyState == "interactive") {
-	        addMouseListener();
+	        addListeners();
 	    }
 	    else {
-	        document.addEventListener('DOMContentLoaded', addMouseListener);
+	        document.addEventListener('DOMContentLoaded', addListeners);
 	    }
 
-	    function addMouseListener() {
+	    function addListeners() {
+	        var justBlured;
+	        var wasMouseFocused;
 	        document.body.addEventListener('mousedown', function (e) {
 	            var el = e.target;
 	            var labeledElement;
@@ -109,7 +111,7 @@
 	            // wait for `document.activeElement` to change
 	            setTimeout(function () {
 	                // find focused element
-	                setMouseFocused(document.activeElement);
+	                onFocus.apply(document.activeElement);
 	            }, 0);
 
 	            function onMouseUp() {
@@ -126,30 +128,59 @@
 
 	            function onFocus() {
 	                setMouseFocused(this);
+	                removeFocusListeners();
 	            }
 
-	            function onBlur() {
-	                this.removeEventListener('blur', onBlur);
-	                utils.removeClass(this, MOUSE_FOCUSED_CLASS);
-	            }
-
-	            function setMouseFocused(element) {
-	                // if found and it's not body
-	                if (element && element.tagName.toLowerCase() != 'body') {
-	                    // add special class, remove it after `blur`
-	                    utils.addClass(element, MOUSE_FOCUSED_CLASS);
-	                    element.addEventListener('blur', onBlur);
-	                }
-	                removeListeners();
-	            }
-
-	            function removeListeners() {
+	            function removeFocusListeners() {
 	                for (var i = 0; i < els.length; i++) {
 	                    el = els[i];
 	                    el.removeEventListener('focus', onFocus);
 	                }
 	            }
 	        });
+
+	        window.addEventListener('blur', function (e) {
+	            if (e.target != this)
+	                return;
+
+	            // save element to restore mouse-focused class when this tab will be focused again
+	            if (justBlured) {
+	                wasMouseFocused = justBlured;
+	            }
+	        }, true);
+
+	        window.addEventListener('focus', function () {
+	            // restore mouse-focused
+	            if (wasMouseFocused) {
+	                if (document.activeElement == wasMouseFocused) {
+	                    setMouseFocused(wasMouseFocused);
+	                }
+	                wasMouseFocused = undefined;
+	            }
+
+	        });
+
+	        function onBlur() {
+	            // save element in case when element is blurred with current browser tab blur
+	            // to restore mouse-focused class when this tab will be focused again
+	            justBlured = this;
+	            this.removeEventListener('blur', onBlur);
+	            utils.removeClass(this, MOUSE_FOCUSED_CLASS);
+
+	            // clear justBlured, if this tab was blurred, element should be saved in wasMouseFocused variable
+	            setTimeout(function () {
+	                justBlured = undefined;
+	            }, 0);
+	        }
+
+	        function setMouseFocused(element) {
+	            // if found and it's not body
+	            if (element && element.tagName.toLowerCase() != 'body') {
+	                // add special class, remove it after `blur`
+	                utils.addClass(element, MOUSE_FOCUSED_CLASS);
+	                element.addEventListener('blur', onBlur);
+	            }
+	        }
 	    }
 
 	})();
