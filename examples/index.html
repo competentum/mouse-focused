@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="../mouse-focused.js"></script>
+    <style>
+        input:focus {
+            outline-color: red;
+        }
+
+        input[type=text]:after {
+            content: "is-mouse-focused";
+        }
+
+        input.is-mouse-focused:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+<p><input type="text"></p>
+
+<p><input type="text"></p>
+
+<p><input type="text"></p>
+</body>
+</html>
