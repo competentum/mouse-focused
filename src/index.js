@@ -119,7 +119,7 @@ var utils = require('./utils');
             // if found and it's not body
             if (element && element.tagName.toLowerCase() != 'body') {
                 // add special class, remove it after `blur`
-                if(!(window.navigator.userAgent.indexOf("MSIE ") > -1 && element.tagName.toLowerCase() != 'svg')){
+                if(!(window.navigator.userAgent.indexOf("MSIE ") > -1 && element.tagName.toLowerCase() === 'svg')){
                     utils.addClass(element, MOUSE_FOCUSED_CLASS);
                     element.addEventListener('blur', onBlur);
                 }
