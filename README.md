@@ -30,4 +30,4 @@ or simply add script to html
 ```
 
 [npm-url]: https://www.npmjs.com/package/mouse-focused
-[npm-image]: https://img.shields.io/npm/v/mouse-focused.svg
+[npm-image]: https://img.shields.io/npm/v/mouse-focused.svg?style=flat-square
