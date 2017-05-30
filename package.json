@@ -4,6 +4,7 @@
   "description": "Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.",
   "main": "src/index.js",
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

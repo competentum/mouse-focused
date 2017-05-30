@@ -1,7 +1,7 @@
 /*!
  * mouse-focused v1.0.7 - Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.
  * repo: https://github.com/competentum/mouse-focused.git
- * (c) 2015-2016 Competentum Group | http://competentum.com
+ * (c) 2015-2017 Competentum Group | http://competentum.com
  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -75,6 +75,10 @@
 	        document.addEventListener('DOMContentLoaded', addListeners);
 	    }
 
+	    function isSvgElement(element) {
+	        return element.namespaceURI && element.namespaceURI.toLowerCase().indexOf('svg') !== -1;
+	    }
+
 	    function addListeners() {
 	        var justBlured;
 	        var wasMouseFocused;
@@ -84,8 +88,8 @@
 
 	            // collect clicked element with it's parents before body-element (except svg elements)
 	            var els = [];
-	            while (el && el.tagName.toLowerCase() != 'body') {
-	                if (!el.namespaceURI || el.namespaceURI.toLowerCase().indexOf('svg') == -1) {
+	            while (el && el.tagName && el.tagName.toLowerCase() != 'body') {
+	                if (!isSvgElement(el)) {
 	                    els.push(el);
 	                    el.addEventListener('focus', onFocus);
 
@@ -110,6 +114,9 @@
 	            // if clicked element has already focused by keyboard
 	            // wait for `document.activeElement` to change
 	            setTimeout(function () {
+	                if (isSvgElement(document.activeElement))
+	                    return;
+
 	                // find focused element
 	                onFocus.apply(document.activeElement);
 	            }, 0);

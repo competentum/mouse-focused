@@ -17,6 +17,10 @@ var utils = require('./utils');
         document.addEventListener('DOMContentLoaded', addListeners);
     }
 
+    function isSvgElement(element) {
+        return element.namespaceURI && element.namespaceURI.toLowerCase().indexOf('svg') !== -1;
+    }
+
     function addListeners() {
         var justBlured;
         var wasMouseFocused;
@@ -26,8 +30,8 @@ var utils = require('./utils');
 
             // collect clicked element with it's parents before body-element (except svg elements)
             var els = [];
-            while (el && el.tagName.toLowerCase() != 'body') {
-                if (!el.namespaceURI || el.namespaceURI.toLowerCase().indexOf('svg') == -1) {
+            while (el && el.tagName && el.tagName.toLowerCase() != 'body') {
+                if (!isSvgElement(el)) {
                     els.push(el);
                     el.addEventListener('focus', onFocus);
 
@@ -52,6 +56,9 @@ var utils = require('./utils');
             // if clicked element has already focused by keyboard
             // wait for `document.activeElement` to change
             setTimeout(function () {
+                if (isSvgElement(document.activeElement))
+                    return;
+
                 // find focused element
                 onFocus.apply(document.activeElement);
             }, 0);
