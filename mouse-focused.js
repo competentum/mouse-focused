@@ -1,5 +1,5 @@
 /*!
- * mouse-focused v1.0.7 - Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.
+ * mouse-focused v1.0.8 - Adds specific class ('is-mouse-focused') to DOM-elements which was focused by mouse.
  * repo: https://github.com/competentum/mouse-focused.git
  * (c) 2015-2017 Competentum Group | http://competentum.com
  */
