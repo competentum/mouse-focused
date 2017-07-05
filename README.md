@@ -10,6 +10,8 @@
 ```
 This css removes default outline from mouse focused elements. But for users, which use keyboard to navigate, experience will not changed.
 
+[Demo page](https://competentum.github.io/mouse-focused/)
+
 [![NPM][npm-image]][npm-url]
 
 ## Installation
